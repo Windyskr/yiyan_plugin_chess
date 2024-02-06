@@ -1,0 +1,25 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "棋盘_0206",
+    "name_for_model": "chess_0206",
+    "description_for_human": "读取文件中的棋盘，获取下一步棋的最佳下法",
+    "description_for_model": "读取文件中的棋盘，获取下一步棋的最佳下法",
+    "auth": {
+        "type": "none"
+    },
+    "api":{
+        "type": "openapi",
+        "url": "http://127.0.0.1:8081/.well-known/openapi.yaml"
+    },
+    "logo_url": "http://127.0.0.1:8081/logo.png",
+    "contact_email": "support@example.com",
+    "legal_info_url": "http://www.example.com/legal",
+    "#comment": "以下字符串为高级设置，可缺省，持续更新",
+    "examples": {
+        "url": "http://127.0.0.1:8081/.well-known/example.yaml"
+    },
+    "msg_content": {
+        "url": "http://127.0.0.1:8081/.well-known/msg_content.yaml"
+    },
+    "upload_type": "png,jpeg,jpg,webp,pdf"
+}

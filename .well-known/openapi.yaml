@@ -1,11 +1,67 @@
 openapi: 3.0.1
 info:
-    title: 单词本
-    description: 个性化的英文单词本，可以增加、删除和浏览单词本中的单词，背单词时从已有单词本中随机抽取单词生成句子或者段落。
+    title: 棋盘_0206
+    description: 读取文件中的棋盘，获取下一步棋的最佳下法
     version: "v1"
 servers:
     - url: http://127.0.0.1:8081
 paths:
+    /start_game:
+        post:
+            operationId: startGame
+            summary: 开始一盘五子棋游戏
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/addBoard"
+            responses:
+                "200":
+                    description: 游戏成功开始
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/messageResponse"
+
+    /end_game:
+        post:
+            operationId: endGame
+            summary: 结束一盘五子棋游戏
+            responses:
+                "200":
+                    description: 游戏成功结束
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/messageResponse"
+    /step:
+        post:
+            operationId: step
+            summary: 用户下这一步的坐标
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/step"
+            responses:
+                # 成功的返回，返回用户下一步后，AI再下一步后的棋盘
+                "200":
+                    description: 用户下一步后，AI再下一步后的棋盘。
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/stepResponse"
+                # 失败的返回，只返回错误信息
+                "400":
+                    description: 返回错误信息
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/messageResponse"
+
+
     /read_board:
         post:
             operationId: readBoard
@@ -24,71 +80,32 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/messageResponse"
 
-    /get_wordbook:
-        get:
-            operationId: getWordbook
-            summary: 展示单词列表
-            responses:
-                "200":
-                    description: 列表展示完成
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/getWordbook"
-    /generate_sentences:
-        post:        
-            operationId: generateSentences
-            summary: 背单词，生成句子
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/generateSentences"
-            responses:
-                "200":
-                    description: 句子生成成功
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/responseSentences"
-    /add_word:
-        post:
-            operationId: addWord
-            summary: 在单词本中添加一个单词
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/addWord"
-            responses:
-                "200":
-                    description: 单词添加成功
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/messageResponse"
-    /delete_word:
-        delete:
-            operationId: deleteWord
-            summary: 从单词本中删除一个单词
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/deleteWord"
-            responses:
-                "200":
-                    description: 单词删除成功
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/messageResponse"
 
 components:
     schemas:
+        step:
+            type: object
+            required: [ x, y ]
+            properties:
+                x:
+                    type: integer
+                    description: 棋盘上的横坐标
+                y:
+                    type: integer
+                    description: 棋盘上的纵坐标
+
+        stepResponse:
+            type: object
+            required: [ board ]
+            properties:
+                board:
+                    type: array
+                    items:
+                        type: array
+                        items:
+                            type: string
+                    description: 棋盘的二维数组，1代表黑子，2代表白子，0代表空。文心一言需要根据这个生成文字版棋盘。
+
         addBoard:
             type: object
             required: [ url ]
@@ -96,45 +113,7 @@ components:
                 url:
                     type: string
                     description: 远程文件url地址，用<url><\url>包含
-        getWordbook:
-            type: object
-            required: [wordbook]
-            properties:
-                wordbook:
-                    type: array
-                    items:
-                        type: string
-                    description: 单词本单词列表
-        addWord:
-            type: object
-            required: [word]
-            properties:
-                word:
-                    type: string
-                    description: 需要添加到单词本中的一个单词
-        deleteWord:
-            type: object
-            required: [word]
-            properties:
-                word:
-                    type: string
-                    description: 需要删除的单词
-        generateSentences:
-            type: object
-            required: [word_number]
-            properties:
-                word_number:
-                    type: integer
-                    description: 几个单词
-        responseSentences:
-            type: object
-            required: [words]
-            properties:
-                words:
-                    type: array
-                    items:
-                        type: string
-                        description: 随机抽取的英文单词
+
         messageResponse:
             type: object
             required: [message]

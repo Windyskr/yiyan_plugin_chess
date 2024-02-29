@@ -119,7 +119,7 @@ def get_board_id(user_id):
 # 棋盘大小由用户指定
 def create_new_board(user_id, board_size):
     # 棋盘是一个二维数组，用字符串表示
-    board = [["-" for _ in range(board_size)] for _ in range(board_size)]
+    board = [["0" for _ in range(board_size)] for _ in range(board_size)]
     board_str = "\n".join(["".join(row) for row in board])
     status = "active"
     conn = get_conn()
@@ -130,6 +130,17 @@ def create_new_board(user_id, board_size):
     cursor.close()
     conn.close()
     return board_id
+
+
+def end_game(board_id, status):
+    print("db end_game", board_id, status)
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE boards SET status=? WHERE id=?", (status, board_id))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print("db end_game done")
 
 
 # 获取棋盘的数组
@@ -167,18 +178,23 @@ def check_player(board_id, player):
 # 首先检查棋盘是否存在，然后检查是否轮到这个玩家下棋，然后检查这个位置是否合法
 # 如果一切正常，就在这个位置下棋
 def next_step(board_id, player, x, y):
+    # player: user or AI
+    print("db next_step", board_id, player, x, y)
     board = get_board(board_id)
     if not board:
-        return "棋盘不存在"
-    if board[x][y] != "-":
-        return "这个位置已经有棋子了"
+        return "error棋盘不存在"
+    if x < 0 or x >= len(board) or y < 0 or y >= len(board[0]):
+        return "越界了"
+    if board[x][y] != "0":
+        return "error这个位置已经有棋子了"
     # 是否轮到这个玩家下棋
     if not check_player(board_id, player):
-        return "现在不是你下棋的时候"
+        return "error现在不是你下棋的时候"
     conn = get_conn()
     cursor = conn.cursor()
     # 在这个位置下棋，更新棋盘和步数
-    board[x][y] = player == "user" and "1" or "0"
+    # user下的是1，ai下的是2，0是空
+    board[x][y] = player == "user" and "1" or "2"
     board_str = "\n".join(["".join(row) for row in board])
     cursor.execute("INSERT INTO steps (board_id, step_number, player, x, y) VALUES (?, ?, ?, ?, ?)",
                    (board_id, len(board), player, x, y))
@@ -186,29 +202,68 @@ def next_step(board_id, player, x, y):
     conn.commit()
     cursor.close()
     conn.close()
-    return "下一步成功", board_str
+    current_winner = ai_check(board_id)
+    if current_winner == "ai_won":
+        return "AI赢了", board_str
+    elif current_winner == "user_won":
+        return "用户赢了", board_str
+    elif current_winner == "draw":
+        return "平局", board_str
+
+    if player == "user":
+        return "用户下一步成功", board_str
+    else:
+        return "AI下一步成功", board_str
+
+
+# 用户下一步
+def user_next_step(board_id, x, y):
+    status, board_str = next_step(board_id, "user", x, y)
+    if status == "用户下一步成功":
+        return ai_next_step(board_id)
+    else:
+        return status, board_str
 
 
 # AI下一步
-# 首先检查棋盘是否存在，然后检查是否轮到AI下棋
-# 如果一切正常，就让AI下一步
 baseurl = "https://wzqai.mhatp.cn"
 
 
 def ai_next_step(board_id):
+    print("db ai_next_step", board_id)
     board = get_board(board_id)
+    print("board", board)
     if not board:
-        return "棋盘不存在"
+        return "error棋盘不存在"
     # 请求 /next 接口
     url = baseurl + "/next"
     headers = {'Content-Type': 'application/json'}
     data = {"board": board}
     response = requests.post(url, headers=headers, data=json.dumps(data))
     if response.status_code != 200:
-        return "AI下一步失败"
+        return "errorAI下一步失败"
     status = response.json().get("status")
     next_step = response.json().get("next_step")
-    return status, next_step
+    print("status", status, "next_step", next_step)
+    x = next_step[0][0], y = next_step[0][1]
+    return next_step(board_id, "ai", x, y)
+
+
+def ai_check(board_id):
+    print("db ai_check", board_id)
+    board = get_board(board_id)
+    print("board", board)
+    if not board:
+        return "棋盘不存在"
+    # 请求 /check 接口
+    url = baseurl + "/check"
+    headers = {'Content-Type': 'application/json'}
+    data = {"board": board}
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    if response.status_code != 200:
+        return "AI下一步失败"
+    status = response.json().get("status")
+    return status
 
 
 if __name__ == "__main__":

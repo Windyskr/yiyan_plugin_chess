@@ -62,25 +62,6 @@ paths:
                                 $ref: "#/components/schemas/messageResponse"
 
 
-    /read_board:
-        post:
-            operationId: readBoard
-            summary: 从远程文件中读取棋盘
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/addBoard"
-            responses:
-                "200":
-                    description: 远程文件中的棋盘读取成功
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/messageResponse"
-
-
 components:
     schemas:
         step:

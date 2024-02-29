@@ -5,9 +5,7 @@ from flask import Flask, request, send_file, make_response
 from flask_cors import CORS
 import json
 import random
-import sqlite3
-
-DATABASE_URL = "chesstest.db"
+import db
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://yiyan.baidu.com"}})
@@ -30,9 +28,18 @@ async def start_game():
     # 输出所有headers参数
     # print(request.headers)
     # 输出headers中的X-Bd-Plugin-Sessionidhash参数
-    print(request.headers.get('X-Bd-Plugin-Sessionidhash'))
-    return make_json_response({"message": "五子棋游戏开始成功"})
-    # return make_json_response({"message": "游戏开始失败"})
+    print("开始一盘游戏")
+    session = request.headers.get('X-Bd-Plugin-Sessionidhash')
+    print("session: ", session)
+    user = db.get_or_create_user(session)
+    print("user: ", user)
+    board_id = db.create_new_board(user, 8)
+    print("board_id: ", board_id)
+    board = db.get_board(board_id)
+    print("board: ", board)
+    return make_json_response({"message": "五子棋游戏开始成功，你为先手，请输入你想下棋的位置。(展示棋盘)",
+                               "chessboard": board,
+                               "prompt": "首先告知用户五子棋游戏开始成功，用户为先手，再显示棋盘。其中文心一言会返回一个markdown版8x8的表格代表，黑子用O表示，白子用X表示，没有下的位置为-。"})
 
 
 # 结束一盘游戏
@@ -51,17 +58,26 @@ async def next_step():
     """
         下一步
     """
-    arr = [[0 for i in range(6)] for j in range(6)]
-    arr[0][0] = 1
-    arr[1][3] = 2
+    print("下一步")
+    session = request.headers.get('X-Bd-Plugin-Sessionidhash')
+    print("session: ", session)
+    user = db.get_or_create_user(session)
+    print("user: ", user)
+    board_id = db.get_board_id(user)
+    print("board_id:", board_id)
+    board = db.get_board(board_id)
+    print("board:", board)
+    if not board:
+        return make_json_response({"message": "棋盘不存在"})
     x = request.json.get('x', 0)
     y = request.json.get('y', 0)
     # 如果处理成功，返回“处理成功”消息，并且返回当前棋盘，否则返回错误消息
-    flag = True
-    if flag:
-        return make_json_response({"message": "AI下一步成功。下面是现在的棋盘，其中：1代表黑子，2代表白子，0代表空，"
-                                              "文心一言需要根据这个数组生成markdown版表格6x6棋盘，黑子用O表示，白子用X表示。",
-                                   "chessboard": arr})
+    status, next_board = db.next_step(board_id, user, x, y)
+    if next_board is not None:
+        return make_json_response({"message": "下一步成功",
+                                   "chessboard": next_board,
+                                   "prompt": "先回复用户：下一步成功。再返回棋盘。棋盘中：0代表黑子，1代表白子，-代表空，文心一言需要根据这个数组生成markdown版表格8x8棋盘，黑子用O表示，白子用X表示，空仍然为-。"
+                                   })
     else:
         return make_json_response({"message": "下一步失败"})
 

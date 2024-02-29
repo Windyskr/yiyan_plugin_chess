@@ -214,6 +214,7 @@ def ai_next_step(board_id):
 if __name__ == "__main__":
     # 删除原有的数据库
     import os
+
     if os.path.exists(DATABASE_URL):
         os.remove(DATABASE_URL)
     # 创建新的数据库

@@ -42,16 +42,6 @@ async def start_game():
                                "prompt": "首先告知用户五子棋游戏开始成功，用户为先手，再显示棋盘。其中文心一言会返回一个markdown版8x8的表格代表，黑子用O表示，白子用X表示，没有下的位置为-。"})
 
 
-# 结束一盘游戏
-@app.route("/end_game", methods=['POST'])
-async def end_game():
-    """
-        结束一盘游戏
-    """
-    return make_json_response({"message": "五子棋游戏结束成功"})
-    # return make_json_response({"message": "游戏结束失败"})
-
-
 # 下一步
 @app.route("/step", methods=['POST'])
 async def next_step():
@@ -82,76 +72,14 @@ async def next_step():
         return make_json_response({"message": "下一步失败"})
 
 
-@app.route("/read_board", methods=['POST'])
-async def read_board():
-    # 输出所有参数
-    print(request.json)
+# 结束一盘游戏
+@app.route("/end_game", methods=['POST'])
+async def end_game():
     """
-        读取棋盘
+        结束一盘游戏
     """
-    url = request.json.get('url', "")
-    import requests
-    response = requests.get(url)
-    # 是一张图片，保存到本地，等待后续处理
-    with open("chessboard.png", "wb") as f:
-        f.write(response.content)
-    # 如果处理成功，返回“处理成功”消息，否则返回错误消息
-    flag = True
-    if flag:
-        prompt = "不要显示棋盘的详细信息。"
-        return make_json_response({"message": "处理成功", "prompt": prompt})
-    else:
-        prompt = "不要显示棋盘的详细信息。"
-        return make_json_response({"message": "处理失败", "prompt": prompt})
-    # word_list = response.content.decode('utf-8')
-    # word_list = word_list.split("\n")
-    # for word in word_list:
-    #     wordbook.append(word)
-    # prompt = "不要显示添加单词的详细列表。"
-    # return make_json_response({"message": "文件中的单词添加成功", "prompt": prompt})
-
-
-@app.route("/add_word", methods=['POST'])
-async def add_word():
-    """
-        添加一个单词
-    """
-    word = request.json.get('word', "")
-    wordbook.append(word)
-    return make_json_response({"message": "单词添加成功"})
-
-
-@app.route("/delete_word", methods=['DELETE'])
-async def delete_word():
-    """
-        删除一个单词
-    """
-    word = request.json.get('word', "")
-    if word in wordbook:
-        wordbook.remove(word)
-    return make_json_response({"message": "单词删除成功"})
-
-
-@app.route("/get_wordbook")
-async def get_wordbook():
-    """
-        获得单词本
-    """
-    return make_json_response({"wordbook": wordbook})
-
-
-@app.route("/generate_sentences", methods=['POST'])
-async def generate_sentences():
-    """
-        生成句子
-    """
-    number = request.get_json()['word_number']
-    number = min(number, len(wordbook))
-    random_words = random.sample(wordbook, number)
-    prompt = "利用英文单词（words）生成一个英文段落，要求这个段落不超过100个英文单词且必须全英文，" \
-             "并包含上述英文单词，同时是一个有逻辑的句子"
-    # API返回字段"prompt"有特殊含义：开发者可以通过调试它来调试输出效果
-    return make_json_response({"words": random_words, "prompt": prompt})
+    return make_json_response({"message": "五子棋游戏结束成功"})
+    # return make_json_response({"message": "游戏结束失败"})
 
 
 @app.route("/logo.png")

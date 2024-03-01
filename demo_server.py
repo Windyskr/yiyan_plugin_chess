@@ -58,26 +58,26 @@ async def next_step():
     x = request.json.get('x', 0)
     y = request.json.get('y', 0)
     # 如果处理成功，返回“处理成功”消息，并且返回当前棋盘，否则返回错误消息
-    status, next_board = db.next_step(board_id, "user", x, y)
-
-    if status == "AI下一步成功":
+    status, next_board = db.user_next_step(board_id, x, y)
+    print("status:", status)
+    if "AI下一步成功" in status:
         # 说明用户下一步成功，AI下一步成功，游戏还未结束
         return make_json_response({"message": "用户下一步成功，AI下一步成功",
                                    "chessboard": next_board,
-                                   "prompt": "先回复用户：用户下一步成功，AI下一步成功。再返回棋盘。棋盘中：1代表黑子，2代表白子，0代表空，文心一言需要根据这个数组生成markdown版表格8x8棋盘，黑子用O表示，白子用X表示，空为-。"
+                                   "prompt": "先回复用户：用户下一步成功，AI下一步成功。再返回棋盘。棋盘中：1代表O，2代表X，0代表空，文心一言需要根据这个数组生成markdown版表格8x8棋盘。"
                                    })
-    elif status.contains("平局") or status.contains("赢了"):
+    elif "平局" in status or "赢了" in status:
         # 说明游戏结束
         db.end_game(board_id, status)
         return make_json_response({"message": status,
                                    "chessboard": next_board,
-                                   "prompt": "先回复用户：游戏结果+游戏结束。再返回棋盘。棋盘中：1代表黑子，2代表白子，0代表空，文心一言需要根据这个数组生成markdown版表格8x8棋盘，黑子用O表示，白子用X表示，空为-。"
+                                   "prompt": "先回复用户：游戏结果+游戏结束。再返回棋盘。棋盘中：1代表O，2代表X，0代表空，文心一言需要根据这个数组生成markdown版表格8x8棋盘。"
                                    })
     else:
         # 说明用户下一步成功，AI下一步失败
         return make_json_response({"message": "失败",
                                    "chessboard": next_board,
-                                   "prompt": "先回复用户：用户下一步成功，AI下一步失败。再返回棋盘。棋盘中：1代表黑子，2代表白子，0代表空，文心一言需要根据这个数组生成markdown版表格8x8棋盘，黑子用O表示，白子用X表示，空为-。"
+                                   "prompt": "先回复用户：用户下一步成功，AI下一步失败。再返回棋盘。棋盘中：1代表O，2代表X，0代表空，文心一言需要根据这个数组生成markdown版表格8x8棋盘。"
                                    })
 
 

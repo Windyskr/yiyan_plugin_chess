@@ -59,7 +59,6 @@ def create_steps_table():
     """
     id：唯一标识每一步的ID。
     board_id：棋盘ID，用于标识这一步是在哪个棋盘上的。
-    step_number：步数。
     player：谁走的这一步，例如"user"表示用户走的，"ai"表示AI走的。
     x：棋子的x坐标。
     y：棋子的y坐标。
@@ -72,7 +71,6 @@ def create_steps_table():
         CREATE TABLE IF NOT EXISTS steps (
             id INTEGER PRIMARY KEY AUTOINCREMENT, -- unique identifier for each step
             board_id INTEGER, -- identifier for the chess board
-            step_number INTEGER, -- the number of the step
             player TEXT, -- who made the step, user or ai
             x INTEGER, -- the x coordinate of the step
             y INTEGER, -- the y coordinate of the step
@@ -163,15 +161,19 @@ def get_board(board_id):
 # 如果是第一轮，返回True
 # 如果合法，返回True
 def check_player(board_id, player):
+    print("db check_player", board_id, player)
     conn = get_conn()
     cursor = conn.cursor()
-    cursor.execute("SELECT player FROM steps WHERE board_id=? ORDER BY step_number DESC LIMIT 1", (board_id,))
+    cursor.execute("SELECT player FROM steps WHERE board_id=? ORDER BY id DESC LIMIT 1", (board_id,))
     last_player = cursor.fetchone()
     cursor.close()
     conn.close()
     if not last_player:
+        print("第一轮")
         return True
-    return last_player[0] != player
+    else:
+        print("last_player", last_player[0])
+        return last_player[0] != player
 
 
 # 下一步，需要指定棋盘id，下棋的玩家，以及下棋的位置
@@ -182,42 +184,53 @@ def next_step(board_id, player, x, y):
     print("db next_step", board_id, player, x, y)
     board = get_board(board_id)
     if not board:
-        return "error棋盘不存在"
-    if x < 0 or x >= len(board) or y < 0 or y >= len(board[0]):
-        return "越界了"
-    if board[x][y] != "0":
-        return "error这个位置已经有棋子了"
+        print("error棋盘不存在")
+        return "error棋盘不存在", None
+    if x <= 0 or x > len(board) or y <= 0 or y > len(board[0]):
+        print("error越界了")
+        return "error越界了", None
+    if board[x - 1][y - 1] != "0":
+        print("error这个位置已经有棋子了")
+        return "error这个位置已经有棋子了", None
     # 是否轮到这个玩家下棋
     if not check_player(board_id, player):
-        return "error现在不是你下棋的时候"
+        print("error现在不是你下棋的时候")
+        return "error现在不是你下棋的时候", None
     conn = get_conn()
     cursor = conn.cursor()
     # 在这个位置下棋，更新棋盘和步数
     # user下的是1，ai下的是2，0是空
-    board[x][y] = player == "user" and "1" or "2"
+    board[x - 1][y - 1] = player == "user" and "1" or "2"
     board_str = "\n".join(["".join(row) for row in board])
-    cursor.execute("INSERT INTO steps (board_id, step_number, player, x, y) VALUES (?, ?, ?, ?, ?)",
-                   (board_id, len(board), player, x, y))
+    cursor.execute("INSERT INTO steps (board_id, player, x, y) VALUES (?, ?, ?, ?)",
+                   (board_id, player, x, y))
     cursor.execute("UPDATE boards SET board=? WHERE id=?", (board_str, board_id))
     conn.commit()
     cursor.close()
     conn.close()
     current_winner = ai_check(board_id)
+    board_show = get_board(board_id)
     if current_winner == "ai_won":
-        return "AI赢了", board_str
+        print("AI赢了", board_show)
+        return "AI赢了", board_show
     elif current_winner == "user_won":
-        return "用户赢了", board_str
+        print("用户赢了", board_show)
+        return "用户赢了", board_show
     elif current_winner == "draw":
-        return "平局", board_str
+        print("平局", board_show)
+        return "平局", board_show
 
     if player == "user":
-        return "用户下一步成功", board_str
+        print("用户下一步成功", board_show)
+        return "用户下一步成功", board_show
     else:
-        return "AI下一步成功", board_str
+        print("AI下一步成功", board_show)
+        return "AI下一步成功", board_show
 
 
 # 用户下一步
 def user_next_step(board_id, x, y):
+    print("db user_next_step", board_id, x, y)
     status, board_str = next_step(board_id, "user", x, y)
     if status == "用户下一步成功":
         return ai_next_step(board_id)
@@ -236,16 +249,18 @@ def ai_next_step(board_id):
     if not board:
         return "error棋盘不存在"
     # 请求 /next 接口
-    url = baseurl + "/next"
-    headers = {'Content-Type': 'application/json'}
-    data = {"board": board}
-    response = requests.post(url, headers=headers, data=json.dumps(data))
-    if response.status_code != 200:
-        return "errorAI下一步失败"
-    status = response.json().get("status")
-    next_step = response.json().get("next_step")
-    print("status", status, "next_step", next_step)
-    x = next_step[0][0], y = next_step[0][1]
+    # url = baseurl + "/next"
+    # headers = {'Content-Type': 'application/json'}
+    # data = {"board": board}
+    # response = requests.post(url, headers=headers, data=json.dumps(data))
+    # if response.status_code != 200:
+    #     return "errorAI下一步失败"
+    # status = response.json().get("status")
+    # next_step = response.json().get("next_step")
+    # print("status", status, "next_step", next_step)
+    # x = next_step[0][0], y = next_step[0][1]
+    x = 5
+    y = 7
     return next_step(board_id, "ai", x, y)
 
 
@@ -261,8 +276,9 @@ def ai_check(board_id):
     data = {"board": board}
     response = requests.post(url, headers=headers, data=json.dumps(data))
     if response.status_code != 200:
-        return "AI下一步失败"
+        return "errorAI检查失败"
     status = response.json().get("status")
+    print("AI check status", status)
     return status
 
 

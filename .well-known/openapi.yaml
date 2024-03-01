@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-    title: 棋盘_0206
-    description: 读取文件中的棋盘，获取下一步棋的最佳下法
+    title: 一步一言
+    description: 一步一言是一个五子棋游戏，用户和AI轮流下棋。
     version: "v1"
 servers:
     - url: http://127.0.0.1:8081
@@ -9,6 +9,7 @@ paths:
     /start_game:
         post:
             operationId: startGame
+            description: 开始一盘五子棋游戏
             summary: 开始一盘五子棋游戏
             requestBody:
                 required: true
@@ -38,7 +39,8 @@ paths:
     /step:
         post:
             operationId: step
-            summary: 用户下这一步的坐标
+            description: 用户下一步棋，用户的输入可能为：{1，2}--代表x=1，y=2\n{2,3}---代表x=2，y=3\n{2 3}---代表x=2，y=3\n{我要下到3，5}---代表x=3，y=5
+            summary: 从用户的各种简单（例：直接两个数字）或者复杂输入中（例：我想要下到3，5上）获取用户下一步的棋盘坐标，返回AI下一步后的棋盘
             requestBody:
                 required: true
                 content:
@@ -48,7 +50,7 @@ paths:
             responses:
                 # 成功的返回，返回用户下一步后，AI再下一步后的棋盘
                 "200":
-                    description: 用户下一步后，AI再下一步后的棋盘。
+                    description: 用户下一步后的信息。如果此时游戏结束，返回游戏结束的信息。如果此时游戏没有结束，返回AI下一步后的棋盘，以及游戏是否结束的信息。
                     content:
                         application/json:
                             schema:
@@ -70,10 +72,10 @@ components:
             properties:
                 x:
                     type: integer
-                    description: 棋盘上的横坐标
+                    description: 棋盘上的横坐标，从1开始，到8结束（包括8），从用户的输入中读取
                 y:
                     type: integer
-                    description: 棋盘上的纵坐标
+                    description: 棋盘上的纵坐标，从1开始，到8结束（包括8），从用户的输入中读取
 
         stepResponse:
             type: object
@@ -85,7 +87,7 @@ components:
                         type: array
                         items:
                             type: string
-                    description: 棋盘的二维数组，1代表黑子，2代表白子，0代表空。文心一言需要根据这个生成文字版棋盘。
+                    description: 棋盘的Markdown表示，需要不加更改的仔细保持原样输出Markdown格式
 
         addBoard:
             type: object
@@ -101,4 +103,4 @@ components:
             properties:
                 message:
                     type: string
-                    description: 回复信息
+                    description: 有用的信息

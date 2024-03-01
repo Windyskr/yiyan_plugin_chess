@@ -233,7 +233,8 @@ def user_next_step(board_id, x, y):
     print("db user_next_step", board_id, x, y)
     status, board_str = next_step(board_id, "user", x, y)
     if status == "用户下一步成功":
-        return ai_next_step(board_id)
+        status, board_str = ai_next_step(board_id)
+        return status, board_str
     else:
         return status, board_str
 
@@ -247,21 +248,25 @@ def ai_next_step(board_id):
     board = get_board(board_id)
     print("board", board)
     if not board:
-        return "error棋盘不存在"
+        return "error棋盘不存在", None
     # 请求 /next 接口
-    # url = baseurl + "/next"
-    # headers = {'Content-Type': 'application/json'}
-    # data = {"board": board}
-    # response = requests.post(url, headers=headers, data=json.dumps(data))
-    # if response.status_code != 200:
-    #     return "errorAI下一步失败"
-    # status = response.json().get("status")
-    # next_step = response.json().get("next_step")
-    # print("status", status, "next_step", next_step)
-    # x = next_step[0][0], y = next_step[0][1]
-    x = 5
-    y = 7
-    return next_step(board_id, "ai", x, y)
+    url = baseurl + "/next"
+    headers = {'Content-Type': 'application/json'}
+    data = {"numbers": board}
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    if response.status_code != 200:
+        print("errorAI下一步失败")
+        print(response.text)
+        print(response.status_code)
+        print(response.json())
+        return "errorAI下一步失败", None
+    next_steps = response.json().get("next_step")
+    print("---ai next_step", next_steps)
+    # [[5, 4], [4, 5], [5, 5]]
+    x, y = next_steps[0]
+    print("x, y", x, y)
+    status, board_str = next_step(board_id, "ai", x, y)
+    return status, board_str
 
 
 def ai_check(board_id):
@@ -273,12 +278,13 @@ def ai_check(board_id):
     # 请求 /check 接口
     url = baseurl + "/check"
     headers = {'Content-Type': 'application/json'}
-    data = {"board": board}
+    data = {"numbers": board}
     response = requests.post(url, headers=headers, data=json.dumps(data))
     if response.status_code != 200:
+        print("errorAI检查失败")
         return "errorAI检查失败"
     status = response.json().get("status")
-    print("AI check status", status)
+    print("---AI check status", status)
     return status
 
 

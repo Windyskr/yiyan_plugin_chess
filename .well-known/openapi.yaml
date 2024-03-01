@@ -11,12 +11,6 @@ paths:
             operationId: startGame
             description: 开始一盘五子棋游戏
             summary: 开始一盘五子棋游戏
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/addBoard"
             responses:
                 "200":
                     description: 游戏成功开始

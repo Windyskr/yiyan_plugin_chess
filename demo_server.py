@@ -9,7 +9,8 @@ import db
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://yiyan.baidu.com"}})
-
+# 跨域 *
+CORS(app, resources={r"/*": {"origins": "*"}})
 wordbook = []
 
 
@@ -149,6 +150,16 @@ async def openapi_spec():
         text = f.read()
         return text, 200, {"Content-Type": "text/yaml"}
 
+
+@app.route("/.well-known/example.yaml")
+async def example_spec():
+    """
+        注册用的：返回插件所依赖的插件服务的API接口描述，参照openapi规范编写。
+        注意：API路由是固定的，事先约定的。
+    """
+    with open(".well-known/example.yaml", encoding="utf-8") as f:
+        text = f.read()
+        return text, 200, {"Content-Type": "text/yaml"}
 
 @app.route('/')
 def index():

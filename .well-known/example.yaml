@@ -7,7 +7,7 @@ examples:
         # 触发插件
         plugin:
           # 应当触发的接口operationId
-          operationId: start_game
+          operationId: startGame
           # 思考过程，对触发有帮助
           thoughts: 这是一个开始一盘五子棋游戏的需求
   - context: # 对话历史
@@ -17,7 +17,7 @@ examples:
         # 触发插件
         plugin:
           # 应当触发的接口operationId
-          operationId: end_game
+          operationId: endGame
           # 思考过程，对触发有帮助
           thoughts: 这是一个结束一盘五子棋游戏的需求
   - context: # 对话历史
@@ -29,7 +29,7 @@ examples:
           # 应当触发的接口operationId
           operationId: step
           # 思考过程，对触发有帮助
-          thoughts: 这是一个用户下一步棋的需求
+          thoughts: 棋盘总共8行8列，如果用户输入的是两个数字，就说明一个用户下一步棋的需求
           requestArguments:
             x: 1
             y: 2
@@ -42,7 +42,7 @@ examples:
           # 应当触发的接口operationId
           operationId: step
           # 思考过程，对触发有帮助
-          thoughts: 这是一个用户下一步棋的需求
+          thoughts: 棋盘总共8行8列，如果用户输入的是两个数字，就说明一个用户下一步棋的需求
           requestArguments:
             x: 3
             y: 5
@@ -55,10 +55,23 @@ examples:
           # 应当触发的接口operationId
           operationId: step
           # 思考过程，对触发有帮助
-          thoughts: 这是一个用户下一步棋的需求
+          thoughts: 棋盘总共8行8列，如果用户输入的是两个数字，就说明一个用户下一步棋的需求
           requestArguments:
             x: 4
             y: 3
+  - context: # 对话历史
+      - role: user
+        content: 35
+      - role: bot
+        # 触发插件
+        plugin:
+          # 应当触发的接口operationId
+          operationId: step
+          # 思考过程，对触发有帮助
+          thoughts: 棋盘总共8行8列，如果用户输入的是两个数字，就说明一个用户下一步棋的需求
+          requestArguments:
+            x: 3
+            y: 5
   - context: # 对话历史
       - role: user
         content: 我想要下到3，4
@@ -68,7 +81,7 @@ examples:
           # 应当触发的接口operationId
           operationId: step
           # 思考过程，对触发有帮助
-          thoughts: 这是一个用户下一步棋的需求
+          thoughts: 棋盘总共8行8列，如果用户输入的是两个数字，就说明一个用户下一步棋的需求
           requestArguments:
             x: 3
             y: 4
@@ -85,11 +98,3 @@ examples:
           requestArguments:
             x: 5
             y: 6
-  # 反例，无需触发此插件的任一某个接口
-  - context: # 对话历史
-      - role: user
-        content: 去哪里可以买一盘五子棋
-      - role: bot
-        # 无需触发
-        plugin:
-          thoughts: 我不需要使用以上工具

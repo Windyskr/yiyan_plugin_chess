@@ -1,25 +1,24 @@
 {
   "schema_version": "v1",
-  "name_for_human": "棋盘_0206",
-  "name_for_model": "chess_0206",
-  "description_for_human": "与用户进行五子棋比赛",
-  "description_for_model": "与用户进行五子棋比赛",
+  "name_for_human": "一步一言-五子棋对战AI插件",
+  "name_for_model": "ybyy_fwwb",
+  "description_for_human": "一步一言是一个五子棋游戏，用户和AI轮流下棋。",
+  "description_for_model": "五子棋AI对战插件，用户和AI轮流下棋，适用于五子棋游戏爱好者和AI技术爱好者。插件可以从用户简单或复杂的棋步输入中唤醒，例如'{1，2}'，'{2,3}'，'{2 3}'或'{我要下到3，5}'。",
   "auth": {
     "type": "none"
   },
   "api": {
     "type": "openapi",
-    "url": "http://127.0.0.1:8081/.well-known/openapi.yaml"
+    "url": "https://yiyan.mhatp.cn/.well-known/openapi.yaml"
   },
-  "logo_url": "http://127.0.0.1:8081/logo.png",
+  "logo_url": "https://yiyan.mhatp.cn/logo.png",
   "contact_email": "support@example.com",
-  "legal_info_url": "http://www.example.com/legal",
-  "#comment": "以下字符串为高级设置，可缺省，持续更新",
+  "legal_info_url": "https://www.example.com/legal",
+  "#comment": "以下字符串为高级设置，可缺省，持续更新\"upload_type\": \"png,jpeg,jpg,webp,pdf\"",
   "examples": {
-    "url": "http://127.0.0.1:8081/.well-known/example.yaml"
+    "url": "https://yiyan.mhatp.cn/.well-known/example.yaml"
   },
   "msg_content": {
-    "url": "http://127.0.0.1:8081/.well-known/msg_content.yaml"
-  },
-  "upload_type": "png,jpeg,jpg,webp,pdf"
+    "url": "https://yiyan.mhatp.cn/.well-known/msg_content.yaml"
+  }
 }

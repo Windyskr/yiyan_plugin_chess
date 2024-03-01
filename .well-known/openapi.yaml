@@ -4,7 +4,7 @@ info:
     description: 一步一言是一个五子棋游戏，用户和AI轮流下棋。
     version: "v1"
 servers:
-    - url: http://127.0.0.1:8081
+    - url: http://47.113.230.250:8088/
 paths:
     /start_game:
         post:

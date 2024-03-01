@@ -9,10 +9,9 @@
   },
   "api": {
     "type": "openapi",
-    "url": "http://127.0.0.1:8081/.well-known/openapi.yaml"
+    "url": "https://doge.mhatp.cn/openapi.yaml"
   },
-  "logo_url": "http://127.0.0.1:8081/logo.png",
+  "logo_url": "https://doge.mhatp.cn/logo.jpg",
   "contact_email": "support@example.com",
-  "legal_info_url": "https://www.example.com/legal",
-  "#comment": "以下字符串为高级设置，可缺省，持续更新\"upload_type\": \"png,jpeg,jpg,webp,pdf\""
+  "legal_info_url": "https://www.example.com/legal"
 }

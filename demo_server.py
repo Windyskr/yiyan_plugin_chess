@@ -8,7 +8,6 @@ import random
 import db
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "https://yiyan.baidu.com"}})
 # 跨域 *
 CORS(app, resources={r"/*": {"origins": "*"}})
 wordbook = []
@@ -42,6 +41,7 @@ def board_to_md(chessboard):
                 markdown_table += ' X |'
         markdown_table += '\n|'
     return markdown_table
+
 
 # 开始一盘游戏
 @app.route("/start_game", methods=['POST'])
@@ -160,6 +160,7 @@ async def example_spec():
     with open(".well-known/example.yaml", encoding="utf-8") as f:
         text = f.read()
         return text, 200, {"Content-Type": "text/yaml"}
+
 
 @app.route('/')
 def index():

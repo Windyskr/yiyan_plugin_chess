@@ -252,7 +252,7 @@ def ai_next_step(board_id):
     # 请求 /next 接口
     url = baseurl + "/next"
     headers = {'Content-Type': 'application/json'}
-    data = {"numbers": board}
+    data = {"numbers": board, "difficulity": "easy"}
     response = requests.post(url, headers=headers, data=json.dumps(data))
     if response.status_code != 200:
         print("errorAI下一步失败")

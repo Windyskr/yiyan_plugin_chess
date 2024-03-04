@@ -6,6 +6,7 @@ from flask_cors import CORS
 import json
 import random
 import db
+from utils import board_to_image
 
 app = Flask(__name__)
 # 跨域 *
@@ -61,10 +62,10 @@ async def start_game():
     print("board_id: ", board_id)
     board = db.get_board(board_id)
     print("board: ", board)
-    next_board = board_to_md(board)
+    next_board = board_to_image(board)
     return make_json_response({"message": "五子棋游戏开始成功，你为先手，请输入你想下棋的位置。(展示棋盘)",
-                               "chessboard": next_board,
-                               "prompt": "首先告知用户五子棋游戏开始成功，用户为先手，再显示棋盘。其中文心一言会返回一个markdown版8x8的表格代表，黑子用O表示，白子用X表示，没有下的位置为-。"})
+                               "chessboard_img_url": next_board,
+                               "prompt": "首先告知用户五子棋游戏开始成功，用户为先手，再显示棋盘。其中文心一言会返回一个图像，需要用markdown的格式展示出来，用于展示8x8的棋盘。"})
 
 
 # 用户下一步
@@ -86,7 +87,7 @@ async def next_step():
     status, next_board = db.user_next_step(board_id, x, y)
     # 如果不是none
     if next_board:
-        next_board = board_to_md(next_board)
+        next_board = board_to_image(next_board)
     print("status:", status)
     if "AI下一步成功" in status:
         # 说明用户下一步成功，AI下一步成功，游戏还未结束

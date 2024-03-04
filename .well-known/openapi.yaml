@@ -1,10 +1,10 @@
 openapi: 3.0.1
 info:
-    title: 一步一言
-    description: 一步一言是一个五子棋游戏，用户和AI轮流下棋。
+    title: 五子棋AI对战
+    description: 一个五子棋游戏，用户和AI轮流下棋。
     version: "v1"
 servers:
-    - url: http://47.113.230.250:8088/
+    - url: http://127.0.0.1:8081/
 paths:
     /start_game:
         post:
@@ -73,15 +73,14 @@ components:
 
         stepResponse:
             type: object
-            required: [ board ]
+            required: [ chessboard ]
             properties:
-                board:
-                    type: array
-                    items:
-                        type: array
-                        items:
-                            type: string
-                    description: 棋盘的Markdown表示，需要不加更改的仔细保持原样输出Markdown格式
+                chessboard_img_url:
+                    type: string
+                    description: 棋盘图片的URL地址
+                message:
+                    type: string
+                    description: 有关棋局状态或者下一步要求的提示信息
 
         addBoard:
             type: object

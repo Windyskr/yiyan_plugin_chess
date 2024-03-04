@@ -16,12 +16,11 @@ def board_to_image(board):
         "numbers": board
     }
     response = requests.post(url, headers=headers, data=json.dumps(data))
-    with open('boardToImage.png', 'wb') as f:
-        f.write(response.content)
     uuid_str = str(uuid.uuid1())
-    # 上传图片到又拍云
-    res = up.put(f'/boardToImage/{uuid_str}.png', response.content)
-    # print(res)
+    headers = {
+        'x-gmkerl-thumb': 'yiyan'
+    }
+    res = up.put(f'/boardToImage/{uuid_str}.png', response.content, headers=headers)
     img_url = f'https://yiyan-image.mhatp.cn/boardToImage/{uuid_str}.png'
     print(img_url)
     return img_url

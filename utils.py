@@ -22,15 +22,15 @@ def board_to_hex(board):
 
     # 将十进制数转换为十六进制数，并移除前面的 "0x"
     hex_representation = hex(decimal_representation)[2:]
-
-    return hex_representation
+    print(hex_representation)
+    return str(hex_representation)
 
 
 def board_to_image(board):
     board_hex = board_to_hex(board)
-    img_url = f'https://yiyan-image.mhatp.cn/boardToImage/{board_hex}.png!yiyan'
-    response = requests.get(img_url)
-    if response.status_code == 200:
+    img_url = f'https://yiyan-image.mhatp.cn/boardToImage/{board_hex}.png'
+    get_response = requests.get(img_url)
+    if get_response.status_code == 200:
         print("图片已经存在 " + img_url)
         return img_url
     else:
@@ -43,15 +43,16 @@ def board_to_image(board):
             "numbers": board
         }
         response = requests.post(url, headers=headers, data=json.dumps(data))
-        res = up.put(f'/boardToImage/{board_hex}.png', response.content)
-        print("图片已经上传：" + str(res) + img_url)
+        img_url = f'https://yiyan-image.mhatp.cn/boardToImage/{board_hex}.png!yiyan'
+        print("图片正在上传：" + img_url)
+        res = up.put(f'/boardToImage/{board_hex}.png', response.content, checksum=True)
         return img_url
 
 
 # 使用方式：
 if __name__ == "__main__":
-    board = [["0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0"],
-             ["0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0"],
-             ["0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0"],
-             ["0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0"]]
+    board = [['1', '2', '1', '1', '2', '1', '1', '2'], ['2', '1', '1', '2', '0', '0', '0', '0'],
+             ['0', '0', '0', '1', '2', '0', '0', '0'], ['0', '0', '0', '0', '2', '0', '0', '0'],
+             ['0', '0', '0', '2', '1', '2', '0', '0'], ['0', '0', '0', '0', '1', '2', '0', '0'],
+             ['0', '0', '0', '0', '0', '0', '0', '0'], ['0', '0', '0', '0', '0', '0', '0', '0']]
     image_data = board_to_image(board)

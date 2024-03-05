@@ -1,0 +1,65 @@
+version: 0.0.1
+examples:
+  - context: # Dialogue history
+      - role: user
+        content: 开始一局五子棋游戏
+      - role: bot
+        # Trigger plugin
+        plugin:
+          # The interface operationId to be triggered
+          operationId: startGomokuGame
+          # Thinking process, helpful for triggering
+          thoughts: This is a request to start a Gomoku game
+  - context: # Dialogue history
+      - role: user
+        content: 开始五子棋游戏
+      - role: bot
+        # Trigger plugin
+        plugin:
+          # The interface operationId to be triggered
+          operationId: startGomokuGame
+          # Thinking process, helpful for triggering
+          thoughts: This is a request to start a Gomoku game
+  - context: # Dialogue history
+      - role: user
+        content: 开始五子棋
+      - role: bot
+        # Trigger plugin
+        plugin:
+          # The interface operationId to be triggered
+          operationId: startGomokuGame
+          # Thinking process, helpful for triggering
+          thoughts: This is a request to start a Gomoku game
+  - context: # Dialogue history
+      - role: user
+        content: 下一步 {3, 5}
+      - role: bot
+        # Trigger plugin
+        plugin:
+          # The interface operationId to be triggered
+          operationId: stepGomoku
+          # Thinking process, helpful for triggering
+          thoughts: This is a request to make a move in the Gomoku game
+          requestArguments:
+            x: 3
+            y: 5
+  - context: # Dialogue history
+      - role: user
+        content: 结束五子棋游戏
+      - role: bot
+        # Trigger plugin
+        plugin:
+          # The interface operationId to be triggered
+          operationId: endGomokuGame
+          # Thinking process, helpful for triggering
+          thoughts: This is a request to end the Gomoku game
+  - context: # Dialogue history
+      - role: user
+        content: 获取五子棋棋盘状态
+      - role: bot
+        # Trigger plugin
+        plugin:
+          # The interface operationId to be triggered
+          operationId: getGomokuBoardStatus
+          # Thinking process, helpful for triggering
+          thoughts: This is a request to get the current Gomoku board status

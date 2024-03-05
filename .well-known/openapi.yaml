@@ -8,12 +8,12 @@ servers:
 paths:
     /start_game:
         post:
-            operationId: startGame
+            operationId: startGomokuGame
             description: 开始一盘五子棋游戏
             summary: 开始一盘五子棋游戏
             responses:
                 "200":
-                    description: 游戏成功开始
+                    description: 五子棋游戏成功开始
                     content:
                         application/json:
                             schema:
@@ -21,20 +21,20 @@ paths:
 
     /end_game:
         post:
-            operationId: endGame
+            operationId: endGomokuGame
             summary: 结束一盘五子棋游戏
             responses:
                 "200":
-                    description: 游戏成功结束
+                    description: 五子棋游戏成功结束
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/messageResponse"
     /step:
         post:
-            operationId: step
-            description: 用户输入例如'{1，2}'，'{2,3}'，'{2 3}'或'{我要下到3，5}'。五子棋回合可能会有很多（超过10个回合），所以你必须时刻保持专注，以便获取到用户的棋盘。
-            summary: 必须时刻保持专注，从用户的各种简单（例：直接两个数字）或者复杂输入中（例：我想要下到3，5上）获取用户下一步的棋盘坐标，返回AI下一步后的棋盘
+            operationId: stepGomoku
+            description: 用户输入例如'{1，2}'，'{2,3}'，'{2 3}'或'{我要下到3，5}'。五子棋回合可能会有很多（超过10个回合），所以你必须时刻保持专注，以便获取到用户的五子棋操作。
+            summary: 必须时刻保持专注，从用户的各种简单（例：直接两个数字）或者复杂输入中（例：我想要下到3，5上）获取用户下一步的五子棋棋盘坐标
             requestBody:
                 required: true
                 content:
@@ -44,7 +44,7 @@ paths:
             responses:
                 # 成功的返回，返回用户下一步后，AI再下一步后的棋盘
                 "200":
-                    description: 用户下一步后的信息。如果此时游戏结束，返回游戏结束的信息。如果此时游戏没有结束，返回AI下一步后的棋盘，以及游戏是否结束的信息。
+                    description: 用户下一步后的信息。如果此时五子棋游戏结束，返回五子棋游戏结束的信息。如果此时五子棋游戏没有结束，返回AI下一步后的五子棋棋盘，以及五子棋游戏是否结束的信息。
                     content:
                         application/json:
                             schema:
@@ -58,8 +58,8 @@ paths:
                                 $ref: "#/components/schemas/messageResponse"
     /get_board_status:
         post:
-            operationId: getBoardStatus
-            summary: 获取用户的棋盘状态
+            operationId: getGomokuBoardStatus
+            summary: 获取用户的五子棋棋盘状态
             responses:
                 "200":
                     description: 返回用户的五子棋棋局数量以及状态
@@ -82,10 +82,10 @@ components:
             properties:
                 x:
                     type: integer
-                    description: 棋盘上的横坐标，从1开始，到8结束（包括8），从用户的输入中读取
+                    description: Gomoku棋盘上的横坐标，从1开始，到8结束（包括8），从用户的输入中读取
                 y:
                     type: integer
-                    description: 棋盘上的纵坐标，从1开始，到8结束（包括8），从用户的输入中读取
+                    description: Gomoku棋盘上的纵坐标，从1开始，到8结束（包括8），从用户的输入中读取
 
         stepResponse:
             type: object
@@ -93,10 +93,10 @@ components:
             properties:
                 chessboard_img_url:
                     type: string
-                    description: 棋盘图片的URL地址
+                    description: Gomoku棋盘图片的URL地址
                 message:
                     type: string
-                    description: 有关棋局状态或者下一步要求的提示信息
+                    description: 有关Gomoku棋局状态或者下一步要求的提示信息
 
         addBoard:
             type: object

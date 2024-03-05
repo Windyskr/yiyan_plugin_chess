@@ -1,17 +1,20 @@
 {
   "schema_version": "v1",
-  "name_for_human": "一步一言-五子棋AI对战插件",
-  "name_for_model": "ybyy_fwwb",
+  "name_for_human": "一步一言-localtest",
+  "name_for_model": "ybyy_fwwb_123",
   "description_for_human": "一步一言是一个五子棋游戏，用户和AI轮流下棋。",
-  "description_for_model": "五子棋AI对战插件，用户和AI轮流下棋，适用于五子棋游戏爱好者和AI技术爱好者。插件可以从用户简单或复杂的棋步输入中唤醒，例如'{1，2}'，'{2,3}'，'{2 3}'或'{我要下到3，5}'。",
+  "description_for_model": "五子棋AI对战插件，用户和AI轮流下棋。插件被“开始五子棋”唤醒，从而开启一个五子棋对局然后进行AI对弈。",
   "auth": {
     "type": "none"
   },
   "api": {
     "type": "openapi",
-    "url": "https://doge.mhatp.cn/openapi.yaml"
+    "url": "http://127.0.0.1:8081/openapi.yaml"
   },
   "logo_url": "https://doge.mhatp.cn/logo.jpg",
   "contact_email": "support@example.com",
-  "legal_info_url": "https://www.example.com/legal"
+  "legal_info_url": "https://www.example.com/legal",
+  "examples": {
+    "url": "http://127.0.0.1:8081/example.yaml"
+  }
 }

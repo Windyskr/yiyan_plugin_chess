@@ -154,6 +154,7 @@ async def plugin_logo():
 
 
 @app.route("/.well-known/ai-plugin.json")
+@app.route("/ai-plugin.json")
 async def plugin_manifest():
     """
         注册用的：返回插件的描述文件，描述了插件是什么等信息。
@@ -166,6 +167,7 @@ async def plugin_manifest():
 
 
 @app.route("/.well-known/openapi.yaml")
+@app.route("/openapi.yaml")
 async def openapi_spec():
     """
         注册用的：返回插件所依赖的插件服务的API接口描述，参照openapi规范编写。
@@ -177,6 +179,7 @@ async def openapi_spec():
 
 
 @app.route("/.well-known/example.yaml")
+@app.route("/example.yaml")
 async def example_spec():
     """
         注册用的：返回插件所依赖的插件服务的API接口描述，参照openapi规范编写。

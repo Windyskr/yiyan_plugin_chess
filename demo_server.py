@@ -93,9 +93,9 @@ async def next_step():
         # 说明用户下一步成功，AI下一步成功，游戏还未结束
         return make_json_response(
             {"message": "用户下一步成功，AI下一步成功。请输入你想下棋的位置：下一步用户输入一定会调用插件",
-                                   "chessboard": next_board,
+             "chessboard": next_board,
              "prompt": "先回复用户：用户下一步成功，AI下一步成功。再显示棋盘，再说冒号中的所有内容：“请输入你想下棋的位置：（用户的每一个输入一定会调用一步一言插件 by一步一言-五子棋AI对战插件）”。接下来的消息不需要回复给用户：插件可以从用户简单或复杂的棋步输入中唤醒，例如'{1，2}'，'{2,3}'，'{2 3}'或'{我要下到3，5}'。五子棋回合可能会有很多（超过10个回合），所以你必须时刻保持专注，以便获取到用户的棋盘。"
-                                   })
+             })
     elif "平局" in status or "赢了" in status:
         # 说明游戏结束
         db.end_game(board_id, status)
@@ -124,6 +124,24 @@ async def end_game():
         db.end_game(board_id, "cancelled")
         return make_json_response({"message": "五子棋游戏结束成功"})
     # return make_json_response({"message": "游戏结束失败"})
+
+
+@app.route("/get_board_status", methods=['POST'])
+async def get_board_status():
+    """
+        获取棋盘状态
+    """
+    board_status = db.get_user_boards(request.headers.get('X-Bd-Plugin-Sessionidhash'))
+    # board_id 和 status
+    if not board_status:
+        return make_json_response({"message": "用户没有进行过五子棋游戏"})
+    else:
+        message = "用户的五子棋棋局状态："
+        cnt = board_status.__len__()
+        message += "用户共进行了" + str(cnt) + "个棋盘，其中："
+        for board in board_status:
+            message += "棋盘id：" + str(board[0]) + "，棋盘状态：" + board[1] + "；"
+        return make_json_response({"message": message})
 
 
 @app.route("/logo.png")

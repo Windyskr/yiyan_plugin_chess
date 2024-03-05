@@ -156,6 +156,18 @@ def get_board(board_id):
     return [list(row) for row in board_str.split("\n")]
 
 
+# 查询现在下棋的用户的所有棋局和棋局状态
+def get_user_boards(user_id):
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, status FROM boards WHERE user_id=?", (user_id,))
+    boards_status = cursor.fetchall()
+    # print("boards_status", boards_status)
+    cursor.close()
+    conn.close()
+    return boards_status
+
+
 # 判断现在下棋的用户是否合法
 # 如果现在轮到的用户不是指定的用户，返回false
 # 如果是第一轮，返回True

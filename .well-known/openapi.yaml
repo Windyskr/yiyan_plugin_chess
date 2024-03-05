@@ -56,7 +56,23 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/messageResponse"
-
+    /get_board_status:
+        post:
+            operationId: getBoardStatus
+            summary: 获取用户的棋盘状态
+            responses:
+                "200":
+                    description: 返回用户的五子棋棋局数量以及状态
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/messageResponse"
+                "400":
+                    description: 返回错误信息
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/messageResponse"
 
 components:
     schemas:

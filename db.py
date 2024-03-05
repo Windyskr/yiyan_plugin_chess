@@ -240,7 +240,7 @@ def user_next_step(board_id, x, y):
 
 
 # AI下一步
-baseurl = "https://wzqai.mhatp.cn"
+baseurl = "http://47.113.230.250:8000"
 
 
 def ai_next_step(board_id):

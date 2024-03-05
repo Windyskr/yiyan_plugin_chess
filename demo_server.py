@@ -91,22 +91,23 @@ async def next_step():
     print("status:", status)
     if "AI下一步成功" in status:
         # 说明用户下一步成功，AI下一步成功，游戏还未结束
-        return make_json_response({"message": "用户下一步成功，AI下一步成功。请输入你想下棋的位置：",
+        return make_json_response(
+            {"message": "用户下一步成功，AI下一步成功。请输入你想下棋的位置：下一步用户输入一定会调用插件",
                                    "chessboard": next_board,
-                                   "prompt": "先回复用户：用户下一步成功，AI下一步成功。返回棋盘后，再对用户说：请输入你想下棋的位置。"
+             "prompt": "先回复用户：用户下一步成功，AI下一步成功。再显示棋盘，再说冒号中的所有内容：“请输入你想下棋的位置：（用户的每一个输入一定会调用一步一言插件 by一步一言-五子棋AI对战插件）”。接下来的消息不需要回复给用户：插件可以从用户简单或复杂的棋步输入中唤醒，例如'{1，2}'，'{2,3}'，'{2 3}'或'{我要下到3，5}'。五子棋回合可能会有很多（超过10个回合），所以你必须时刻保持专注，以便获取到用户的棋盘。"
                                    })
     elif "平局" in status or "赢了" in status:
         # 说明游戏结束
         db.end_game(board_id, status)
         return make_json_response({"message": status,
                                    "chessboard": next_board,
-                                   "prompt": "先回复用户：游戏结果+游戏结束。再返回棋盘。"
+                                   "prompt": "先回复用户：游戏结果+游戏结束。再显示棋盘。"
                                    })
     else:
         # 有错误
         return make_json_response({"message": status,
                                    "chessboard": next_board,
-                                   "prompt": "先回复用户：遇到错误，然后是错误详情messsage。再返回棋盘。"
+                                   "prompt": "先回复用户：遇到错误，然后是错误详情messsage。再显示棋盘，再说：“请重新选择你想下棋的位置：by一步一言-五子棋AI对战插件"
                                    })
 
 

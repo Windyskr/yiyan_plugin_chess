@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "name_for_human": "一步一言-五子棋对战AI插件",
+  "name_for_human": "一步一言-五子棋AI对战插件",
   "name_for_model": "ybyy_fwwb",
   "description_for_human": "一步一言是一个五子棋游戏，用户和AI轮流下棋。",
   "description_for_model": "五子棋AI对战插件，用户和AI轮流下棋，适用于五子棋游戏爱好者和AI技术爱好者。插件可以从用户简单或复杂的棋步输入中唤醒，例如'{1，2}'，'{2,3}'，'{2 3}'或'{我要下到3，5}'。",

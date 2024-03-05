@@ -28,10 +28,10 @@ def board_to_hex(board):
 
 def board_to_image(board):
     board_hex = board_to_hex(board)
-    img_url = f'https://yiyan-image.mhatp.cn/boardToImage/{board_hex}.png'
+    img_url = f'https://yiyan-image.mhatp.cn/boardToImage/{board_hex}.png!yiyan'
     response = requests.get(img_url)
     if response.status_code == 200:
-        print("图片已经存在" + img_url)
+        print("图片已经存在 " + img_url)
         return img_url
     else:
         url = 'http://47.113.230.250:8000/boardToImage'
@@ -43,18 +43,15 @@ def board_to_image(board):
             "numbers": board
         }
         response = requests.post(url, headers=headers, data=json.dumps(data))
-        headers = {
-            'x-gmkerl-thumb': 'yiyan'
-        }
-        res = up.put(f'/boardToImage/{board_hex}.png', response.content, headers=headers)
+        res = up.put(f'/boardToImage/{board_hex}.png', response.content)
         print("图片已经上传：" + str(res) + img_url)
         return img_url
 
 
 # 使用方式：
 if __name__ == "__main__":
-    board = [["1", "1", "1", "1", "1", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0"],
-             ["0", "2", "2", "2", "2", "0", "2", "0"], ["0", "0", "0", "0", "0", "0", "0", "0"],
+    board = [["0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0"],
              ["0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0"],
-             ["0", "0", "0", "0", "0", "0", "1", "0"], ["0", "0", "0", "0", "0", "0", "0", "0"]]
+             ["0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0"],
+             ["0", "0", "0", "0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0", "0", "0", "0"]]
     image_data = board_to_image(board)

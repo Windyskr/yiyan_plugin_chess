@@ -1,29 +1,54 @@
 import requests
 import json
 import upyun
-import uuid
 
 up = upyun.UpYun('yiyan-image', 'yiyanfastapi', 'RNJUsrxw8GE9TqNNFmOXf26BvWk8rGac')
 
 
+def board_to_hex(board):
+    def base3_to_decimal(b3):
+        return int(''.join(str(i) for i in b3), 3)
+
+    # 用于存储棋盘三进制表示
+    base3_board = []
+
+    # 遍历棋盘，按顺序将状态添加到三进制列表中
+    for row in board:
+        for cell in row:
+            base3_board.append(str(cell))
+
+    # 将三进制列表转换为十进制数
+    decimal_representation = base3_to_decimal(base3_board)
+
+    # 将十进制数转换为十六进制数，并移除前面的 "0x"
+    hex_representation = hex(decimal_representation)[2:]
+
+    return hex_representation
+
+
 def board_to_image(board):
-    url = 'http://47.113.230.250:8000/boardToImage'
-    headers = {
-        'accept': 'application/json',
-        'Content-Type': 'application/json',
-    }
-    data = {
-        "numbers": board
-    }
-    response = requests.post(url, headers=headers, data=json.dumps(data))
-    uuid_str = str(uuid.uuid1())
-    headers = {
-        'x-gmkerl-thumb': 'yiyan'
-    }
-    res = up.put(f'/boardToImage/{uuid_str}.png', response.content, headers=headers)
-    img_url = f'https://yiyan-image.mhatp.cn/boardToImage/{uuid_str}.png'
-    print(img_url)
-    return img_url
+    board_hex = board_to_hex(board)
+    img_url = f'https://yiyan-image.mhatp.cn/boardToImage/{board_hex}.png'
+    response = requests.get(img_url)
+    if response.status_code == 200:
+        print("图片已经存在" + img_url)
+        return img_url
+    else:
+        url = 'http://47.113.230.250:8000/boardToImage'
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/json',
+        }
+        data = {
+            "numbers": board
+        }
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+        headers = {
+            'x-gmkerl-thumb': 'yiyan'
+        }
+        res = up.put(f'/boardToImage/{board_hex}.png', response.content, headers=headers)
+        print("图片已经上传：" + res + img_url)
+        return img_url
 
 
 # 使用方式：

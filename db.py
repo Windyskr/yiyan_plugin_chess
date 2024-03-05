@@ -34,7 +34,7 @@ def create_boards_table():
     user_id：用户ID，用于标识哪个用户的棋盘。
     created_at：棋盘创建的时间。
     updated_at：棋盘最后一次更新的时间。
-    status：棋盘的状态，active表示正在进行中，ai_won表示AI赢了，user_won表示用户赢了，draw表示平局。
+    status：棋盘的状态，active表示正在进行中，ai_won表示AI赢了，user_won表示用户赢了，draw表示平局，cancelled表示游戏取消。
     board：棋盘的字符串表示。
     """
     conn = get_conn()

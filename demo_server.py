@@ -117,7 +117,12 @@ async def end_game():
     """
         结束一盘游戏
     """
-    return make_json_response({"message": "五子棋游戏结束成功"})
+    board_id = db.get_board_id(request.headers.get('X-Bd-Plugin-Sessionidhash'))
+    if not board_id:
+        return make_json_response({"message": "棋盘不存在"})
+    else:
+        db.end_game(board_id, "cancelled")
+        return make_json_response({"message": "五子棋游戏结束成功"})
     # return make_json_response({"message": "游戏结束失败"})
 
 

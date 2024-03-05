@@ -65,7 +65,7 @@ async def start_game():
     next_board = board_to_image(board)
     return make_json_response({"message": "五子棋游戏开始成功，你为先手，请输入你想下棋的位置。(展示棋盘)",
                                "chessboard_img_url": next_board,
-                               "prompt": "首先告知用户五子棋游戏开始成功，用户为先手，再显示棋盘。其中文心一言会返回一个图像，需要用markdown的格式展示出来，用于展示8x8的棋盘。"})
+                               "prompt": "首先告知用户五子棋游戏开始成功，用户为先手，再显示棋盘。棋盘是一个图像链接，需要用markdown的格式展示出来(![棋盘](chessboard_img_url))，用于展示8x8的棋盘。"})
 
 
 # 用户下一步
@@ -103,10 +103,10 @@ async def next_step():
                                    "prompt": "先回复用户：游戏结果+游戏结束。再返回棋盘。"
                                    })
     else:
-        # 说明用户下一步成功，AI下一步失败
-        return make_json_response({"message": "失败",
+        # 有错误
+        return make_json_response({"message": status,
                                    "chessboard": next_board,
-                                   "prompt": "先回复用户：用户下一步成功，AI下一步失败。再返回棋盘。"
+                                   "prompt": "先回复用户：遇到错误，然后是错误详情messsage。再返回棋盘。"
                                    })
 
 

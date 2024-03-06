@@ -180,12 +180,24 @@ async def openapi_spec():
 
 @app.route("/.well-known/example.yaml")
 @app.route("/example.yaml")
-async def example_spec():
+async def example():
     """
         注册用的：返回插件所依赖的插件服务的API接口描述，参照openapi规范编写。
         注意：API路由是固定的，事先约定的。
     """
     with open(".well-known/example.yaml", encoding="utf-8") as f:
+        text = f.read()
+        return text, 200, {"Content-Type": "text/yaml"}
+
+
+@app.route("/.well-known/example-<int:num>.yaml", methods=['GET'])
+@app.route("/example-<int:num>.yaml", methods=['GET'])
+async def example_spec(num):
+    """
+        注册用的：返回插件所依赖的插件服务的API接口描述，参照openapi规范编写。
+        注意：API路由是固定的，事先约定的。
+    """
+    with open(f".well-known/example-{num}.yaml", encoding="utf-8") as f:
         text = f.read()
         return text, 200, {"Content-Type": "text/yaml"}
 

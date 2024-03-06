@@ -1,9 +1,9 @@
 {
   "schema_version": "v1",
-  "name_for_human": "一步一言-localtest",
+  "name_for_human": "一步一言-l1023",
   "name_for_model": "ybyy_fwwb_123",
   "description_for_human": "一步一言是一个五子棋游戏，用户和AI轮流下棋。",
-  "description_for_model": "五子棋AI对战插件，用户和AI轮流下棋。插件被“开始五子棋”唤醒，从而开启一个五子棋对局然后进行AI对弈。",
+  "description_for_model": "这是一个五子棋AI对战插件，用户和AI轮流下棋。使用'开始五子棋'命令来唤醒插件并开启一个五子棋对局。在对局中，用户和AI将轮流进行对弈。",
   "auth": {
     "type": "none"
   },

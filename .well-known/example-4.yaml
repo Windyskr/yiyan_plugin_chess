@@ -1,0 +1,36 @@
+version: 0.0.1
+examples:
+  - context:
+      - role: user
+        content: 开始五子棋
+      - role: bot
+        plugin:
+          operationId: startGomokuGame
+          thoughts: 用户想要开始一局五子棋游戏
+  - context:
+      - role: user
+        content: 3，2
+      - role: bot
+        plugin:
+          operationId: stepGomoku
+          thoughts: 用户想要在位置 (3, 2) 下一个棋子
+          requestArguments:
+            x: 3
+            y: 2
+  - context:
+      - role: user
+        content: 1, 4
+      - role: bot
+        plugin:
+          operationId: stepGomoku
+          thoughts: 用户想要在位置 (1, 5) 下一个棋子
+          requestArguments:
+            x: 1
+            y: 5
+  - context:
+      - role: user
+        content: 结束这个游戏
+      - role: bot
+        plugin:
+          operationId: endGomokuGame
+          thoughts: 用户想要结束五子棋游戏

@@ -1,65 +1,179 @@
 version: 0.0.1
 examples:
-  - context: # Dialogue history
+  - context:
       - role: user
         content: 开始一局五子棋游戏
       - role: bot
-        # Trigger plugin
         plugin:
-          # The interface operationId to be triggered
           operationId: startGomokuGame
-          # Thinking process, helpful for triggering
-          thoughts: This is a request to start a Gomoku game
-  - context: # Dialogue history
+          thoughts: 用户想要开始一局五子棋游戏
+  - context:
       - role: user
-        content: 开始五子棋游戏
+        content: 3, 5
       - role: bot
-        # Trigger plugin
         plugin:
-          # The interface operationId to be triggered
-          operationId: startGomokuGame
-          # Thinking process, helpful for triggering
-          thoughts: This is a request to start a Gomoku game
-  - context: # Dialogue history
-      - role: user
-        content: 开始五子棋
-      - role: bot
-        # Trigger plugin
-        plugin:
-          # The interface operationId to be triggered
-          operationId: startGomokuGame
-          # Thinking process, helpful for triggering
-          thoughts: This is a request to start a Gomoku game
-  - context: # Dialogue history
-      - role: user
-        content: 下一步 {3, 5}
-      - role: bot
-        # Trigger plugin
-        plugin:
-          # The interface operationId to be triggered
           operationId: stepGomoku
-          # Thinking process, helpful for triggering
-          thoughts: This is a request to make a move in the Gomoku game
+          thoughts: 用户想要在位置 (3, 5) 下一个棋子
           requestArguments:
             x: 3
             y: 5
-  - context: # Dialogue history
+  - context:
+      - role: user
+        content: 3，1
+      - role: bot
+        plugin:
+          operationId: stepGomoku
+          thoughts: 用户想要在位置 (3, 1) 下一个棋子
+          requestArguments:
+            x: 3
+            y: 1
+  - context:
       - role: user
         content: 结束五子棋游戏
       - role: bot
-        # Trigger plugin
         plugin:
-          # The interface operationId to be triggered
           operationId: endGomokuGame
-          # Thinking process, helpful for triggering
-          thoughts: This is a request to end the Gomoku game
-  - context: # Dialogue history
+          thoughts: 用户想要结束五子棋游戏
+  - context:
       - role: user
-        content: 获取五子棋棋盘状态
+        content: 我要开始玩五子棋
       - role: bot
-        # Trigger plugin
         plugin:
-          # The interface operationId to be triggered
+          operationId: startGomokuGame
+          thoughts: 用户想要开始一局五子棋游戏
+  - context:
+      - role: user
+        content: 把棋子放到 3, 5
+      - role: bot
+        plugin:
+          operationId: stepGomoku
+          thoughts: 用户想要在位置 (3, 5) 下一个棋子
+          requestArguments:
+            x: 3
+            y: 5
+  - context:
+      - role: user
+        content: 1,3
+      - role: bot
+        plugin:
+          operationId: stepGomoku
+          thoughts: 用户想要在位置 (1, 3) 下一个棋子
+          requestArguments:
+            x: 1
+            y: 3
+  - context:
+      - role: user
+        content: 我要停止玩五子棋
+      - role: bot
+        plugin:
+          operationId: endGomokuGame
+          thoughts: 用户想要结束五子棋游戏
+  - context:
+      - role: user
+        content: 启动一局五子棋
+      - role: bot
+        plugin:
+          operationId: startGomokuGame
+          thoughts: 用户想要开始一局五子棋游戏
+  - context:
+      - role: user
+        content: 走 3, 5
+      - role: bot
+        plugin:
+          operationId: stepGomoku
+          thoughts: 用户想要在位置 (3, 5) 下一个棋子
+          requestArguments:
+            x: 3
+            y: 5
+  - context:
+      - role: user
+        content: 把棋子放到 3, 5
+      - role: bot
+        plugin:
+          operationId: stepGomoku
+          thoughts: 用户想要在位置 (3, 5) 下一个棋子
+          requestArguments:
+            x: 3
+            y: 5
+  - context:
+      - role: user
+        content: 停止这局五子棋
+      - role: bot
+        plugin:
+          operationId: endGomokuGame
+          thoughts: 用户想要结束五子棋游戏
+  - context:
+      - role: user
+        content: 开始五子棋
+      - role: bot
+        plugin:
+          operationId: startGomokuGame
+          thoughts: 用户想要开始一局五子棋游戏
+  - context:
+      - role: user
+        content: 3，2
+      - role: bot
+        plugin:
+          operationId: stepGomoku
+          thoughts: 用户想要在位置 (3, 2) 下一个棋子
+          requestArguments:
+            x: 3
+            y: 2
+  - context:
+      - role: user
+        content: 1, 4
+      - role: bot
+        plugin:
+          operationId: stepGomoku
+          thoughts: 用户想要在位置 (1, 5) 下一个棋子
+          requestArguments:
+            x: 1
+            y: 5
+  - context:
+      - role: user
+        content: 结束这个游戏
+      - role: bot
+        plugin:
+          operationId: endGomokuGame
+          thoughts: 用户想要结束五子棋游戏
+  - context:
+      - role: user
+        content: 开始五子棋
+      - role: bot
+        plugin:
+          operationId: startGomokuGame
+          thoughts: 用户想要开始一局五子棋游戏
+  - context:
+      - role: user
+        content: 1,3
+      - role: bot
+        plugin:
+          operationId: stepGomoku
+          thoughts: 用户想要在位置 (1, 3) 下一个棋子
+          requestArguments:
+            x: 1
+            y: 3
+  - context:
+      - role: user
+        content: 把棋子放到 3, 5
+      - role: bot
+        plugin:
+          operationId: stepGomoku
+          thoughts: 用户想要在位置 (3, 5) 下一个棋子
+          requestArguments:
+            x: 3
+            y: 5
+  - context:
+      - role: user
+        content: 我需要查看棋盘
+      - role: bot
+        plugin:
           operationId: getGomokuBoardStatus
-          # Thinking process, helpful for triggering
-          thoughts: This is a request to get the current Gomoku board status
+          thoughts: 用户想要查看当前的五子棋棋盘状态
+  - context:
+      - role: user
+        content: 结束这个游戏
+      - role: bot
+        plugin:
+          operationId: endGomokuGame
+          thoughts: 用户想要结束五子棋游戏

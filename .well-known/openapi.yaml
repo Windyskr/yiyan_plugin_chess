@@ -9,8 +9,8 @@ paths:
     /start_game:
         post:
             operationId: startGomokuGame
-            description: 用户想要开始一盘五子棋游戏
-            summary: 开始一盘五子棋游戏
+            # description: 用户想要开始一盘五子棋游戏。注意：用户在此时不会输入数字，输入数字是在看到棋盘的时候继续对局的操作。
+            summary: 开始五子棋游戏
             responses:
                 "200":
                     description: 用户与AI的五子棋游戏成功开始
@@ -22,11 +22,11 @@ paths:
     /end_game:
         post:
             operationId: endGomokuGame
-            description: 用户想要结束一盘五子棋游戏
-            summary: 结束一盘五子棋游戏
+            # description: 用户想要结束一盘五子棋游戏
+            summary: 结束本局游戏
             responses:
                 "200":
-                    description: 用户与AI的五子棋游戏成功开始
+                    description: 用户与AI的五子棋游戏结束
                     content:
                         application/json:
                             schema:
@@ -34,8 +34,8 @@ paths:
     /step:
         post:
             operationId: stepGomoku
-            description: 用户输入如'{1，2}'，'{2,3}'，'{2 3}'或'{我要下到3，5}'。五子棋回合可能会有很多（超过10个回合），所以你必须时刻保持专注，以便获取到用户的五子棋操作。
-            summary: 从用户的输入中获取用户下一步的五子棋棋盘坐标
+            # description: 用户输入如'{1，2}'，'{2,3}'，'{2 3}'或'{我要下到3，5}'或者'下在8 4'。五子棋回合可能会有很多（超过10个回合），所以你必须时刻保持专注，以便获取到用户的五子棋操作。
+            summary: 用户输入了数字
             requestBody:
                 required: true
                 content:
@@ -45,12 +45,12 @@ paths:
             responses:
                 # 成功的返回，返回用户下一步后，AI再下一步后的棋盘
                 "200":
-                    description: 如果此时五子棋游戏结束，返回五子棋游戏结束的信息。如果此时五子棋游戏没有结束，返回AI下一步后的五子棋棋盘，以及五子棋游戏是否结束的信息。
+                    description: 获取输入的数字
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/stepResponse"
-                # 失败的返回，只返回错误信息
+                 # 失败的返回，只返回错误信息
                 "400":
                     description: 错误信息
                     content:
@@ -63,7 +63,7 @@ paths:
             summary: 获取用户的五子棋棋盘状态
             responses:
                 "200":
-                    description: 返回用户的五子棋棋局数量以及状态
+                    description: 返回用户的五子棋棋局数量以及棋局个棋子所处棋盘位置
                     content:
                         application/json:
                             schema:
@@ -94,7 +94,7 @@ components:
             properties:
                 chessboard_img_url:
                     type: string
-                    description: Gomoku棋盘图片的URL地址
+                    description: 棋盘图片的URL地址，即为img_url
                 message:
                     type: string
                     description: 有关Gomoku棋局状态或者下一步要求的提示信息

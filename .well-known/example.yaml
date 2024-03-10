@@ -1,32 +1,152 @@
 version: 0.0.1
+# 什么时候应该触发，什么时候不该触发
 examples:
+  # 历史对话
+  # 开始
   - context:
       - role: user
-        content: 开始一局五子棋游戏
+        content: 开始五子棋
       - role: bot
+        # 触发插件
         plugin:
+          # 应当触发的接口 operationId
           operationId: startGomokuGame
-          thoughts: 用户想要开始一局五子棋游戏
+          # 思考过程，对触发有帮助
+          thoughts: 用户想要开始五子棋游戏
+  # 开始
+#  - context:
+#      - role: user
+#        content: 玩五子棋
+#      - role: bot
+#        # 触发插件
+#        plugin:
+#          # 应当触发的接口 operationId
+#          operationId: startGomokuGame
+#          # 思考过程，对触发有帮助
+#          thoughts: 用户想要开始五子棋游戏
+  # 开始
+#  - context:
+#      - role: user
+#        content: 启动一局五子棋
+#      - role: bot
+#        plugin:
+#          operationId: startGomokuGame
+#          thoughts: 用户想要开始一局五子棋游戏
+  # 开始
+#  - context:
+#      - role: user
+#        content: 开始五子棋
+#      - role: bot
+#        plugin:
+#          operationId: startGomokuGame
+#          thoughts: 用户想要开始一局五子棋游戏
+
+
+#   历史对话
+#   下棋
   - context:
       - role: user
-        content: 3, 5
+        content: 下在 3, 5
       - role: bot
+        # 触发插件
         plugin:
+          # 应当触发的接口 operationId
           operationId: stepGomoku
+          # 思考过程，对触发有帮助
           thoughts: 用户想要在位置 (3, 5) 下一个棋子
           requestArguments:
             x: 3
             y: 5
-  - context:
-      - role: user
-        content: 3，1
-      - role: bot
-        plugin:
-          operationId: stepGomoku
-          thoughts: 用户想要在位置 (3, 1) 下一个棋子
-          requestArguments:
-            x: 3
-            y: 1
+
+#  - context:
+#      - role: user
+#        content: 走 3, 5
+#      - role: bot
+#        plugin:
+#          operationId: stepGomoku
+#          thoughts: 用户想要在位置 (3, 5) 下一个棋子
+#          requestArguments:
+#            x: 3
+#            y: 5
+#  - context:
+#      - role: user
+#        content: 下在 6，8
+#      - role: bot
+#        # 触发插件
+#        plugin:
+#          # 应当触发的接口 operationId
+#          operationId: stepGomoku
+#          # 思考过程，对触发有帮助
+#          thoughts: 用户想要在位置 (3, 1) 下一个棋子
+#          requestArguments:
+#            x: 6
+#            y: 8
+#  - context:
+#      - role: user
+#        content: 把棋子放到 3, 5
+#      - role: bot
+#        # 触发插件
+#        plugin:
+#          # 应当触发的接口 operationId
+#          operationId: stepGomoku
+#          # 思考过程，对触发有帮助
+#          thoughts: 用户想要在位置 (3, 5) 下一个棋子
+#          requestArguments:
+#            x: 3
+#            y: 5
+#  - context:
+#      - role: user
+#        content: 1,3
+#      - role: bot
+#        plugin:
+#          operationId: stepGomoku
+#          thoughts: 用户想要在位置 (1, 3) 下一个棋子
+#          requestArguments:
+#            x: 1
+#            y: 3
+#  - context:
+#      - role: user
+#        content: 把棋子放到 3, 5
+#      - role: bot
+#        plugin:
+#          operationId: stepGomoku
+#          thoughts: 用户想要在位置 (3, 5) 下一个棋子
+#          requestArguments:
+#            x: 3
+#            y: 5
+#  - context:
+#      - role: user
+#        content: 3，2
+#      - role: bot
+#        plugin:
+#          operationId: stepGomoku
+#          thoughts: 用户想要在位置 (3, 2) 下一个棋子
+#          requestArguments:
+#            x: 3
+#            y: 2
+#  - context:
+#      - role: user
+#        content: 1, 4
+#      - role: bot
+#        plugin:
+#          operationId: stepGomoku
+#          thoughts: 用户想要在位置 (1, 5) 下一个棋子
+#          requestArguments:
+#            x: 1
+#            y: 4
+#  - context:
+#      - role: user
+#        content: 把棋子放到 3, 5
+#      - role: bot
+#        plugin:
+#          operationId: stepGomoku
+#          thoughts: 用户想要在位置 (3, 5) 下一个棋子
+#          requestArguments:
+#            x: 3
+#            y: 5
+
+  # 历史对话
+  # 结束
   - context:
       - role: user
         content: 结束五子棋游戏
@@ -34,135 +154,37 @@ examples:
         plugin:
           operationId: endGomokuGame
           thoughts: 用户想要结束五子棋游戏
-  - context:
-      - role: user
-        content: 我要开始玩五子棋
-      - role: bot
-        plugin:
-          operationId: startGomokuGame
-          thoughts: 用户想要开始一局五子棋游戏
-  - context:
-      - role: user
-        content: 把棋子放到 3, 5
-      - role: bot
-        plugin:
-          operationId: stepGomoku
-          thoughts: 用户想要在位置 (3, 5) 下一个棋子
-          requestArguments:
-            x: 3
-            y: 5
-  - context:
-      - role: user
-        content: 1,3
-      - role: bot
-        plugin:
-          operationId: stepGomoku
-          thoughts: 用户想要在位置 (1, 3) 下一个棋子
-          requestArguments:
-            x: 1
-            y: 3
-  - context:
-      - role: user
-        content: 我要停止玩五子棋
-      - role: bot
-        plugin:
-          operationId: endGomokuGame
-          thoughts: 用户想要结束五子棋游戏
-  - context:
-      - role: user
-        content: 启动一局五子棋
-      - role: bot
-        plugin:
-          operationId: startGomokuGame
-          thoughts: 用户想要开始一局五子棋游戏
-  - context:
-      - role: user
-        content: 走 3, 5
-      - role: bot
-        plugin:
-          operationId: stepGomoku
-          thoughts: 用户想要在位置 (3, 5) 下一个棋子
-          requestArguments:
-            x: 3
-            y: 5
-  - context:
-      - role: user
-        content: 把棋子放到 3, 5
-      - role: bot
-        plugin:
-          operationId: stepGomoku
-          thoughts: 用户想要在位置 (3, 5) 下一个棋子
-          requestArguments:
-            x: 3
-            y: 5
-  - context:
-      - role: user
-        content: 停止这局五子棋
-      - role: bot
-        plugin:
-          operationId: endGomokuGame
-          thoughts: 用户想要结束五子棋游戏
-  - context:
-      - role: user
-        content: 开始五子棋
-      - role: bot
-        plugin:
-          operationId: startGomokuGame
-          thoughts: 用户想要开始一局五子棋游戏
-  - context:
-      - role: user
-        content: 3，2
-      - role: bot
-        plugin:
-          operationId: stepGomoku
-          thoughts: 用户想要在位置 (3, 2) 下一个棋子
-          requestArguments:
-            x: 3
-            y: 2
-  - context:
-      - role: user
-        content: 1, 4
-      - role: bot
-        plugin:
-          operationId: stepGomoku
-          thoughts: 用户想要在位置 (1, 5) 下一个棋子
-          requestArguments:
-            x: 1
-            y: 5
-  - context:
-      - role: user
-        content: 结束这个游戏
-      - role: bot
-        plugin:
-          operationId: endGomokuGame
-          thoughts: 用户想要结束五子棋游戏
-  - context:
-      - role: user
-        content: 开始五子棋
-      - role: bot
-        plugin:
-          operationId: startGomokuGame
-          thoughts: 用户想要开始一局五子棋游戏
-  - context:
-      - role: user
-        content: 1,3
-      - role: bot
-        plugin:
-          operationId: stepGomoku
-          thoughts: 用户想要在位置 (1, 3) 下一个棋子
-          requestArguments:
-            x: 1
-            y: 3
-  - context:
-      - role: user
-        content: 把棋子放到 3, 5
-      - role: bot
-        plugin:
-          operationId: stepGomoku
-          thoughts: 用户想要在位置 (3, 5) 下一个棋子
-          requestArguments:
-            x: 3
-            y: 5
+#  - context:
+#      - role: user
+#        content: 我要停止玩五子棋
+#      - role: bot
+#        plugin:
+#          operationId: endGomokuGame
+#          thoughts: 用户想要结束五子棋游戏
+#  - context:
+#      - role: user
+#        content: 停止这局五子棋
+#      - role: bot
+#        plugin:
+#          operationId: endGomokuGame
+#          thoughts: 用户想要结束五子棋游戏
+#  - context:
+#      - role: user
+#        content: 结束这个游戏
+#      - role: bot
+#        plugin:
+#          operationId: endGomokuGame
+#          thoughts: 用户想要结束五子棋游戏
+#  - context:
+#      - role: user
+#        content: 结束这个游戏
+#      - role: bot
+#        plugin:
+#          operationId: endGomokuGame
+#          thoughts: 用户想要结束五子棋游戏
+
+
+  # 查看棋盘
   - context:
       - role: user
         content: 我需要查看棋盘
@@ -170,10 +192,13 @@ examples:
         plugin:
           operationId: getGomokuBoardStatus
           thoughts: 用户想要查看当前的五子棋棋盘状态
+
+  # 反例，无需触发此插件的任何一个接口
+  # 对话历史
   - context:
       - role: user
-        content: 结束这个游戏
+        content:
       - role: bot
+        # 无需触发
         plugin:
-          operationId: endGomokuGame
-          thoughts: 用户想要结束五子棋游戏
+          thoughts:

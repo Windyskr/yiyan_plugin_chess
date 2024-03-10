@@ -1,7 +1,7 @@
 {
   "schema_version": "v1",
-  "name_for_human": "一步一言-l1023",
-  "name_for_model": "ybyy_fwwb_123",
+  "name_for_human": "WUZI-Q1",
+  "name_for_model": "WUZI-123",
   "description_for_human": "一步一言是一个五子棋游戏，用户和AI轮流下棋。",
   "description_for_model": "这是一个五子棋AI对战插件，用户和AI轮流下棋。使用'开始五子棋'命令来唤醒插件并开启一个五子棋对局。在对局中，用户和AI将轮流进行对弈。",
   "auth": {
@@ -13,8 +13,5 @@
   },
   "logo_url": "https://doge.mhatp.cn/logo.jpg",
   "contact_email": "support@example.com",
-  "legal_info_url": "https://www.example.com/legal",
-  "examples": {
-    "url": "http://127.0.0.1:8081/example.yaml"
-  }
+  "legal_info_url": "https://www.example.com/legal"
 }
